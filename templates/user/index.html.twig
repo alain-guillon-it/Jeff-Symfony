@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="col-12 pt-5">
+        <h1 class="text-white">Liste de tous les utilisateurs</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <table class="table mt-5">
+                    <caption>Liste des mes utilisateurs</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Prénom</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td scope="col">{{ user.id }}</td>
+                                <td scope="col">{{ user.lastName }}</td>
+                                <td scope="col">{{ user.firstName }}</td>
+                                <td scope="col">{{ user.email }}</td>
+                                <td scope="col">
+                                    <a href={{ path("app_user_show", {"id": user.id}) }}>Afficher</a> &mdash;
+                                    <a href={{ path("app_user_edit", {"id": user.id}) }}>Editer</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
