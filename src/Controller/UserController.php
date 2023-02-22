@@ -10,18 +10,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Form\UserType;
 use App\Entity\User;
 
-#[Route("/user")]
+#[Route("/user", name: "app_user_")]
 class UserController extends AbstractController {
 
-    #[Route(path: "/", name: "app_user_index", methods: "GET")]
-    public function index(UserRepository $userRepository): Response 
+    #[Route(path: "/", name: "index", methods: "GET")]
+    public function index(Request $request, UserRepository $userRepository): Response 
     {
+
+        //dd($request);
         return $this->render("user/index.html.twig", [
             "users" => $userRepository->findAll()
         ]);
     }
 
-    #[Route(path: "/new", name: "app_user_new", methods: ["GET", "POST"])]
+    #[Route(path: "/new", name: "new", methods: ["GET", "POST"])]
     public function new(Request $request, UserRepository $userRepository): Response
     {
         $user = new User();
@@ -40,7 +42,15 @@ class UserController extends AbstractController {
         ]);
     }
 
-    #[Route(path: "/edit/{id}", name: "app_user_edit", methods: ["GET", "POST"])]
+    #[
+        Route(
+            path: "/edit/{id}", 
+            name: "edit", 
+            methods: ["GET", "POST"],
+            requirements: ['id' => '\d+']
+        )
+    
+    ]
     public function edit(Request $request, UserRepository $userRepository, User $user): Response
     {
         $form = $this->createForm(UserType::class, $user);
@@ -57,9 +67,11 @@ class UserController extends AbstractController {
         ]);
     }
 
-    #[Route(path: "/show/{id}", name: "app_user_show", methods: ["GET"])]
-    public function show(User $user): Response
+    #[Route(path: "/show/{id}", name: "show", methods: ["GET"])]
+    public function show(Request $request, User $user, $id): Response
     {
+        // dd($request); // attributes id
+        // dd($id);
         return $this->render("user/show.html.twig", [
             "user" => $user
         ]);
